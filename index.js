@@ -19,7 +19,7 @@ app.get('/api/students', (req, res) => {
   res.json(students);
 });
 
-app.status('/api/students', (req, res) => {
+app.post('/api/students', (req, res) => {
   const { name, yearLevel } = req.body;
 
   const newStudent = {
