@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Students</title>
+</head>
+<body>
+
+<h1>Students</h1>
+<button onclick="loadStudents()">Display Students</button>
+<ul id="list"></ul>
+
+<h1>ADD STUDENT</h1>
+<input type="text" id="name" placeholder="name"/>
+<input type="number" id="yearLevel" placeholder="yearLevel"/>
+<button onclick="addStudents()">Submit</button>
+
+<script>
+const API = "/api/students";
+
+async function loadStudents() {
+  const res = await fetch(API);
+  const data = await res.json();
+
+  const list = document.getElementById('list');
+  list.innerHTML = '';
+
+  data.forEach(student => {
+    const li = document.createElement('li');
+    li.innerHTML = `NAME: ${student.name} <br> YEAR LEVEL: ${student.yearLevel}`;
+    list.appendChild(li);
+  });
+}
+
+async function addStudents(){
+  const name = document.getElementById('name').value;
+  const yearLevel = document.getElementById('yearLevel').value;
+
+  if (!name || !yearLevel) {
+    alert("Fill all fields");
+    return;
+  }
+
+  await fetch(API, {
+    method: 'POST',
+    headers: {
+      'Content-Type':'application/json'
+    }, 
+    body: JSON.stringify({ name, yearLevel })
+  });
+
+  document.getElementById('name').value = "";
+  document.getElementById('yearLevel').value = "";
+
+  loadStudents();
+}
+</script>
+
+</body>
+</html>
